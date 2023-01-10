@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:500,700&amp;display=swap" />
+<script src="vue.min.js"></script>
+<script src="vue-qrcode-reader.browser.js"></script>
+<title>Page Title</title>
+</head>
+<style>
+body { background-color: #EBECF0;}
+#app {
+  margin: 0;
+  padding: 0; text-shadow:-1px -1px 0.4px #fff, 1.1px 1px 4px #BABECC;
+   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5)
+  color: whitesmoke;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7; font-family: 'Montserrat', sans-serif;
+}</style>
+<body>
+
+<div id="app">
+    <p class="error">{{ error }}</p>
+  <center>  <p class="decode-result" style="font-size:150%;">
+      QR SCANNER<br>
+      <b style="color:#f00;">{{ result }}</b>
+    </p></center>
+    <qrcode-stream @decode="onDecode" @init="onInit" />
+</div>
+
+</body>
+<script>
+const QrcodeStream = window.VueQrcodeReader.QrcodeStream;
+new Vue({
+  el: '#app',
+  components: {
+    'qrcode-stream':QrcodeStream,
+  },
+  data: {
+    result: '',
+    error: ''
+  },
+  methods: {
+    onDecode (result) {
+      this.result = result
+    },
+
+    async onInit (promise) {
+      try {
+        await promise
+      } catch (error) {
+        if (error.name === 'NotAllowedError') {
+          this.error = "ERROR: you need to grant camera access permisson"
+        } else if (error.name === 'NotFoundError') {
+          this.error = "ERROR: no camera on this device"
+        } else if (error.name === 'NotSupportedError') {
+          this.error = "ERROR: secure context required (HTTPS, localhost)"
+        } else if (error.name === 'NotReadableError') {
+          this.error = "ERROR: is the camera already in use?"
+        } else if (error.name === 'OverconstrainedError') {
+          this.error = "ERROR: installed cameras are not suitable"
+        } else if (error.name === 'StreamApiNotSupportedError') {
+          this.error = "ERROR: Stream API is not supported in this browser"
+        }
+      }
+    }
+  }
+})</script>
+</html>
