@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script>
+const userAgent = navigator.userAgent;
+if (userAgent.match(/mobile/i)) {
+  // apply styles for mobile devices
+  document.querySelector("body").classList.add("mobile");
+} else {
+  // apply styles for desktop devices
+  document.querySelector("body").classList.add("desktop");
+}
+</script>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:500,700&amp;display=swap" />
 <script src="vue.min.js"></script>
@@ -8,6 +18,16 @@
 <title>Page Title</title>
 </head>
 <style>
+	.mobile {
+  font-size: 14px;
+  width: 100%;
+}
+
+/* styles for desktop devices */
+.desktop {
+  font-size: 16px;
+  width: 1200px;
+}
 .camera{
 position:relative; height:90px; width:90px ; left:50px; top:395px;
   border-radius: 10px; background: linear-gradient(-135deg, #FFFFFF,#ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 300% 300%; animation: gradient 2s ease infinite;
